@@ -1,25 +1,40 @@
 import { StyleSheet, TextInput, Text, View } from "react-native";
 import OutlinedButton from "../components/UI/OutlinedButton";
 import PickDate from "../date/PickDate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getFormattedDate, updatedTime } from "../date/date";
 
 function EditScreen({ navigation }) {
   const [enteredGoalText, setEnteredGoalText] = useState("");
-  const [enteredDate, setEnteredDate] = useState(new Date());
+  const [enteredDate, setEnteredDate] = useState("");
+  const [enteredTime, setEnteredTime] = useState("");
 
-  function getDateHandler(enteredDate) {
-    setEnteredDate(enteredDate);
+  function getDateHandler(dateGet) {
+    setEnteredDate(dateGet);
+    console.log(dateGet);
+  }
+  function getTimeHandler(timeGet) {
+    setEnteredTime(timeGet);
+    console.log(timeGet);
   }
   function inputHandler(enteredText) {
     setEnteredGoalText(enteredText);
   }
-
   function addPlanHandler() {
-    const editedDate = getFormattedDate(enteredDate);
-    const editiedTime = updatedTime(enteredDate);
-    console.log(editedDate);
-    console.log(editiedTime);
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "HomeScreen",
+          params: {
+            text: enteredGoalText,
+            date: enteredDate,
+            time: enteredTime,
+          },
+        },
+      ],
+    });
+
   }
   function updatePlanHandler() {}
 
@@ -33,7 +48,7 @@ function EditScreen({ navigation }) {
         />
       </View>
       <View>
-        <PickDate getDate={getDateHandler} />
+        <PickDate getDate={getDateHandler} getTime={getTimeHandler} />
       </View>
       <View style={styles.buttonContainer}>
         <OutlinedButton

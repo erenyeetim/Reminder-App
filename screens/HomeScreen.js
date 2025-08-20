@@ -1,9 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 
-function HomeScreen() {
+function HomeScreen({ route }) {
+  const text = route.params?.text;
+  const enteredDate = route.params?.date;
+  const enteredTime = route.params?.time;
   return (
     <View>
-      <Text>Araba</Text>
+      <Text>{text}</Text>
+      <Text>{enteredDate}</Text>
+      <Text>{enteredTime}</Text>
     </View>
   );
 }

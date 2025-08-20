@@ -1,119 +1,133 @@
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import DatePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
-import { View, Text, Pressable, Platform, StyleSheet } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import Border from "../components/UI/Border";
-import { getFormattedTime } from "./date";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function PickDate({ getDate, getTime }) {
-  const today = new Date();
-  const [date, setDate] = useState(getFormattedTime(today));
+import Border from "../components/UI/Border";
+import { getFormattedDate, getFormattedTime, updatedTime } from "./date";
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
+function PickDate({ getDate, getTime }) {
+  const [date, setDate] = useState(new Date());
+  const [openDate, setOpenDate] = useState(false);
+  const [openTime, setOpenTime] = useState(false);
 
-  function onChangeDate(event, selectedDate) {
-    setShowDatePicker(Platform.OS === "ios");
-    if (selectedDate) setDate(selectedDate);
-    getDate(date);
+  function openDateHandler() {
+    setOpenDate(true);
   }
-
-  function onChangeTime(event, selectedTime) {
-    setShowTimePicker(Platform.OS === "ios");
-    if (selectedTime) {
-      const newDate = new Date(date);
-      newDate.setHours(selectedTime.getHours());
-      newDate.setMinutes(selectedTime.getMinutes());
-      setDate(newDate);
-    }
+  function openTimeHandler() {
+    setOpenTime(true);
   }
 
   return (
-    <View style={{ padding: 20 }}>
-      <Pressable
-        style={({ pressed }) => pressed && styles.pressed}
-        onPress={() => setShowTimePicker(true)}
-      >
-        <Border>
-          <View style={styles.textContainer}>
-            <View style={styles.string}>
-              <Ionicons name="time" size={18} color={"black"} />
-              <Text style={styles.text}>Time </Text>
+    <View>
+      <View style={styles.buttonContainer}>
+        <Pressable
+          onPress={() => {
+            setOpenTime(true);
+          }}
+        >
+          <Border>
+            <View style={styles.buttonContainer}>
+              <View style={styles.icon}>
+                <Ionicons name="time" />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>Time</Text>
+              </View>
+              <View style={styles.timeContainer}>
+                <Text style={styles.dateText}>
+                  {date.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+              </View>
+              {openTime && (
+                <DatePicker
+                  mode="time"
+                  display="spinner"
+                  value={date}
+                  onChange={(event, selectedDate) => {
+                    setOpenTime(false);
+                    if (selectedDate) {
+                      setDate(selectedDate);
+                      getTime(updatedTime(selectedDate));
+                    }
+                  }}
+                />
+              )}
             </View>
-            <View style={styles.value}>
-              <Text style={{ fontSize: 18 }}>
-                {date.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </Text>
+          </Border>
+        </Pressable>
+      </View>
+      <View>
+        <Pressable
+          onPress={() => {
+            setOpenDate(true);
+          }}
+        >
+          <Border>
+            <View style={styles.buttonContainer}>
+              <View style={styles.icon}>
+                <Ionicons name="calendar" />
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.text}>Date</Text>
+              </View>
+              <View style={styles.timeContainer}>
+                <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
+              </View>
+              {openDate && (
+                <DatePicker
+                  mode="date"
+                  display="spinner"
+                  value={date}
+                  onChange={(event, selectedDate) => {
+                    if (event.type === "dismissed") {
+                      setOpenDate(false);
+                      return;
+                    }
+                    if (event.type === "set") {
+                      setOpenDate(false);
+                      if (selectedDate) {
+                        setDate(selectedDate);
+                        getDate(getFormattedDate(selectedDate));
+                      }
+                    }
+                  }}
+                />
+              )}
             </View>
-          </View>
-        </Border>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => pressed && styles.pressed}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Border>
-          <View style={styles.textContainer}>
-            <View style={styles.string}>
-              <Ionicons name="calendar" size={18} />
-              <Text style={styles.text}> Date </Text>
-            </View>
-            <View style={styles.value}>
-              <Text style={{ fontSize: 18 }}>{date.toLocaleDateString()}</Text>
-            </View>
-          </View>
-        </Border>
-      </Pressable>
-
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display="default"
-          onChange={onChangeDate}
-        />
-      )}
-
-      {showTimePicker && (
-        <DateTimePicker
-          value={date}
-          mode="time"
-          display="default"
-          onChange={onChangeTime}
-        />
-      )}
+          </Border>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
+export default PickDate;
+
 const styles = StyleSheet.create({
-  dateContainer: {
-    flexDirection: "row",
-    marginHorizontal: 10,
-  },
   text: {
     fontSize: 16,
     fontWeight: "bold",
   },
-  pressed: {
-    opacity: 0.5,
+  buttonContainer: {
+    flexDirection: "row",
+  },
+  icon: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingRight: 4,
   },
   textContainer: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  string: {
-    flex: 2,
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  value: {
     flex: 1,
-    alignItems: "center",
-    flexDirection: "row",
+  },
+  timeContainer: {
+    flex: 1,
+  },
+  dateText: {
+    fontSize: 16,
+    textAlign: "center",
   },
 });
