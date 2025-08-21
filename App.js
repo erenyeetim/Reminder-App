@@ -18,14 +18,6 @@ export default function App() {
           component={HomeScreen}
           options={({ navigation }) => ({
             title: "All Planned",
-            headerRight: ({ tintColor }) => (
-              <IconButton
-                icon={"add"}
-                size={24}
-                color={tintColor}
-                onPress={() => navigation.navigate("EditScreen")}
-              />
-            ),
             contentStyle: {
               backgroundColor: Colors.primary50,
             },

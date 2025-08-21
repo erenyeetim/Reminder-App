@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import DatePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,13 +10,8 @@ function PickDate({ getDate, getTime }) {
   const [date, setDate] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
   const [openTime, setOpenTime] = useState(false);
-
-  function openDateHandler() {
-    setOpenDate(true);
-  }
-  function openTimeHandler() {
-    setOpenTime(true);
-  }
+  const [showTimeText, setShowTimeText] = useState(false);
+  const [showDateText, setShowDateText] = useState(false);
 
   return (
     <View>
@@ -35,12 +30,17 @@ function PickDate({ getDate, getTime }) {
                 <Text style={styles.text}>Time</Text>
               </View>
               <View style={styles.timeContainer}>
-                <Text style={styles.dateText}>
-                  {date.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </Text>
+                {showTimeText ? (
+                  <Text style={styles.dateText}>
+                    {date.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    })}
+                  </Text>
+                ) : (
+                  <Text style={styles.dateText}>Input Time</Text>
+                )}
               </View>
               {openTime && (
                 <DatePicker
@@ -52,6 +52,7 @@ function PickDate({ getDate, getTime }) {
                     if (selectedDate) {
                       setDate(selectedDate);
                       getTime(updatedTime(selectedDate));
+                      setShowTimeText(true);
                     }
                   }}
                 />
@@ -75,7 +76,13 @@ function PickDate({ getDate, getTime }) {
                 <Text style={styles.text}>Date</Text>
               </View>
               <View style={styles.timeContainer}>
-                <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
+                {showDateText ? (
+                  <Text style={styles.dateText}>
+                    {date.toLocaleDateString()}
+                  </Text>
+                ) : (
+                  <Text style={styles.dateText}>Input Date</Text>
+                )}
               </View>
               {openDate && (
                 <DatePicker
@@ -92,6 +99,7 @@ function PickDate({ getDate, getTime }) {
                       if (selectedDate) {
                         setDate(selectedDate);
                         getDate(getFormattedDate(selectedDate));
+                        setShowDateText(true);
                       }
                     }
                   }}

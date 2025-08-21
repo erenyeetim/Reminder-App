@@ -1,14 +1,54 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
-function HomeScreen({ route }) {
-  const text = route.params?.text;
-  const enteredDate = route.params?.date;
-  const enteredTime = route.params?.time;
+import IconButton from "../components/UI/IconButton";
+import ReminderItem from "../components/Reminder/ReminderItem";
+
+function HomeScreen({ navigation, route }) {
+  const [reminderGoals, setRemindersGoals] = useState([]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: ({ tintColor }) => (
+        <IconButton
+          icon={"add"}
+          size={24}
+          color={tintColor}
+          onPress={() =>
+            navigation.navigate("EditScreen", {
+              onGoBack: (newReminder) => {
+                setRemindersGoals((prev) => [newReminder, ...prev]);
+              },
+            })
+          }
+        />
+      ),
+    });
+  }, [navigation]);
+
+  useEffect(() => {
+    if (route.params?.reminders) {
+      setRemindersGoals(route.params.reminders);
+    }
+  }, [route.params?.reminders]);
+
   return (
     <View>
-      <Text>{text}</Text>
-      <Text>{enteredDate}</Text>
-      <Text>{enteredTime}</Text>
+      <View>
+        <FlatList
+          data={reminderGoals}
+          renderItem={(itemData) => {
+            return (
+              <ReminderItem
+                text={itemData.item.text}
+                date={itemData.item.date}
+                time={itemData.item.time}
+              />
+            );
+          }}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </View>
   );
 }

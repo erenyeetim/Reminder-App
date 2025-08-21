@@ -1,40 +1,51 @@
-import { StyleSheet, TextInput, Text, View } from "react-native";
+import { StyleSheet, TextInput, Text, View, Alert } from "react-native";
 import OutlinedButton from "../components/UI/OutlinedButton";
 import PickDate from "../date/PickDate";
-import { useEffect, useState } from "react";
-import { getFormattedDate, updatedTime } from "../date/date";
+import { useState } from "react";
 
-function EditScreen({ navigation }) {
+function EditScreen({ navigation, route }) {
   const [enteredGoalText, setEnteredGoalText] = useState("");
+  const [reminderGoal, setReminderGoal] = useState([]);
   const [enteredDate, setEnteredDate] = useState("");
   const [enteredTime, setEnteredTime] = useState("");
 
   function getDateHandler(dateGet) {
     setEnteredDate(dateGet);
-    console.log(dateGet);
   }
   function getTimeHandler(timeGet) {
     setEnteredTime(timeGet);
-    console.log(timeGet);
   }
   function inputHandler(enteredText) {
     setEnteredGoalText(enteredText);
   }
   function addPlanHandler() {
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: "HomeScreen",
-          params: {
-            text: enteredGoalText,
-            date: enteredDate,
-            time: enteredTime,
-          },
-        },
-      ],
-    });
+    if (enteredGoalText === "") {
+      Alert.alert("Input reminder", "You forgot to input todo");
+      return;
+    }
+    if (enteredTime === "") {
+      Alert.alert("Input Date", "You forget to input time");
+      return;
+    }
+    if (enteredDate === "") {
+      Alert.alert("Input Date", "You forget to input date");
+      return;
+    }
+    const newReminder = {
+      text: enteredGoalText,
+      date: enteredDate,
+      time: enteredTime,
+      id: Math.random().toString(),
+    };
 
+    const updatedReminders = [...reminderGoal, newReminder];
+    setReminderGoal(updatedReminders);
+
+    if (route.params?.onGoBack) {
+      route.params.onGoBack(newReminder);
+    }
+
+    navigation.goBack();
   }
   function updatePlanHandler() {}
 
