@@ -39,7 +39,7 @@ function PickDate({ getDate, getTime }) {
                     })}
                   </Text>
                 ) : (
-                  <Text style={styles.dateText}>Input Time</Text>
+                  <Text style={styles.date}>Input Time</Text>
                 )}
               </View>
               {openTime && (
@@ -81,7 +81,7 @@ function PickDate({ getDate, getTime }) {
                     {date.toLocaleDateString()}
                   </Text>
                 ) : (
-                  <Text style={styles.dateText}>Input Date</Text>
+                  <Text style={styles.date}>Input Date</Text>
                 )}
               </View>
               {openDate && (
@@ -136,6 +136,12 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16,
+    textAlign: "center",
+  },
+
+  date: {
+    fontSize: 16,
+    opacity: 0.5,
     textAlign: "center",
   },
 });

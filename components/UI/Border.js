@@ -9,13 +9,15 @@ export default Border;
 
 const styles = StyleSheet.create({
   border: {
-    width: 300,
+    width: 340,
     height: 35,
-    marginVertical: 5,
+    marginVertical: 8,
     paddingTop: 5,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderRadius: 20,
     overflow: "hidden",
+    borderColor: Colors.primary50,
+    backgroundColor: Colors.primary50,
   },
 });

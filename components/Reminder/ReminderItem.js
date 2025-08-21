@@ -1,16 +1,23 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import Colors from "../../constant/color";
 
 function ReminderItem({ text, date, time }) {
   return (
     <View style={styles.container}>
       <Pressable style={styles.pressable} android_ripple={{ color: "#ccc" }}>
         <View style={styles.dataContainer}>
-          <View sytle={styles.textContainer}>
-            <Text sytle={styles.text}>{text}</Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>{text}</Text>
           </View>
-          <View sytle={styles.dateContainer}>
-            <Text>{time}</Text>
-            <Text>{date}</Text>
+          <View style={styles.dateContainer}>
+            <View style={styles.dateRow}>
+              <Text style={styles.dateText}>Time: </Text>
+              <Text style={styles.text}>{time}</Text>
+            </View>
+            <View style={styles.dateRow}>
+              <Text style={styles.dateText}>Date: </Text>
+              <Text style={styles.text}>{date}</Text>
+            </View>
           </View>
         </View>
       </Pressable>
@@ -23,26 +30,34 @@ export default ReminderItem;
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 15,
     marginHorizontal: 20,
     marginVertical: 6,
     overflow: "hidden",
+    backgroundColor: Colors.primary50,
+    elevation: 4,
   },
   dataContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 8,
-    paddingVertical: 5,
+    paddingVertical: 15,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
   },
   textContainer: {
-    flex: 1,
+    flex: 3,
   },
   dateContainer: {
-    flex: 4,
+    flex: 2,
   },
-  pressable: {},
+  dateRow: {
+    flexDirection: "row",
+  },
+  dateText: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
 });

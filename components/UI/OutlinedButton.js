@@ -11,7 +11,7 @@ function OutlinedButton({ children, icon, onPress }) {
       <Ionicons
         name={icon}
         size={18}
-        color={Colors.primary300}
+        color={Colors.primary400}
         style={styles.icon}
       />
       <Text style={styles.text}>{children}</Text>
@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: Colors.primary300,
+    backgroundColor: Colors.primary50,
+    borderColor: Colors.primary50,
     borderRadius: 12,
   },
   pressed: {
@@ -40,6 +41,6 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   text: {
-    color: Colors.primary300,
+    color: Colors.primary400,
   },
 });

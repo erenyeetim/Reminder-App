@@ -2,6 +2,7 @@ import { StyleSheet, TextInput, Text, View, Alert } from "react-native";
 import OutlinedButton from "../components/UI/OutlinedButton";
 import PickDate from "../date/PickDate";
 import { useState } from "react";
+import Colors from "../constant/color";
 
 function EditScreen({ navigation, route }) {
   const [enteredGoalText, setEnteredGoalText] = useState("");
@@ -96,5 +97,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 8,
     borderWidth: 1,
+    backgroundColor: Colors.primary50,
   },
 });

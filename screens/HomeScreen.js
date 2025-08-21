@@ -33,26 +33,28 @@ function HomeScreen({ navigation, route }) {
   }, [route.params?.reminders]);
 
   return (
-    <View>
-      <View>
-        <FlatList
-          data={reminderGoals}
-          renderItem={(itemData) => {
-            return (
-              <ReminderItem
-                text={itemData.item.text}
-                date={itemData.item.date}
-                time={itemData.item.time}
-              />
-            );
-          }}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
+    <View style={styles.container}>
+      <FlatList
+        data={reminderGoals}
+        renderItem={(itemData) => {
+          return (
+            <ReminderItem
+              text={itemData.item.text}
+              date={itemData.item.date}
+              time={itemData.item.time}
+            />
+          );
+        }}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
