@@ -1,13 +1,26 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Colors from "../../constant/color";
+import { useNavigation } from "@react-navigation/native";
 
-function ReminderItem({ text, date, time }) {
+function ReminderItem({ id, description, date, time }) {
+  const navigation = useNavigation();
+
+  function reminderPressHandler() {
+    navigation.navigate("EditScreen", {
+      reminderId: id,
+    });
+  }
+
   return (
     <View style={styles.container}>
-      <Pressable style={styles.pressable} android_ripple={{ color: "#ccc" }}>
+      <Pressable
+        onPress={reminderPressHandler}
+        style={styles.pressable}
+        android_ripple={{ color: "#ccc" }}
+      >
         <View style={styles.dataContainer}>
           <View style={styles.textContainer}>
-            <Text style={styles.text}>{text}</Text>
+            <Text style={styles.text}>{description}</Text>
           </View>
           <View style={styles.dateContainer}>
             <View style={styles.dateRow}>

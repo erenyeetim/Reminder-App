@@ -1,0 +1,106 @@
+import { useState } from "react";
+import { StyleSheet, TextInput, View } from "react-native";
+import { getFormattedDate, updatedTime } from "../../date/date";
+import OutlinedButton from "../UI/OutlinedButton";
+import PickDate from "../../date/PickDate";
+import Colors from "../../constant/color";
+
+function ReminderForm({ submitButtonLabel, onSubmit, defaultValues }) {
+  const [inputs, setInputs] = useState({
+    description: {
+      value: defaultValues ? defaultValues.description : "",
+    },
+    time: {
+      value: defaultValues ? updatedTime(defaultValues.date) : "",
+    },
+    date: {
+      value: defaultValues ? getFormattedDate(defaultValues.date) : "",
+    },
+  });
+
+  function inputChangedHandler(inputIdentifier, enteredAmount) {
+    setInputs((curInputs) => {
+      return {
+        ...curInputs,
+        [inputIdentifier]: { value: enteredAmount },
+      };
+    });
+  }
+
+  function submitHandler() {
+    const reminderData = {
+      description: inputs.description.value,
+      time: inputs.time.value,
+      date: inputs.date.value,
+    };
+
+    const descriptionIsValid = reminderData.description.trim().length > 0;
+    const timeIsValid = reminderData.time !== "Invalid Date";
+    const dateIsValid = reminderData.date !== "Invalid Date";
+
+    if (!descriptionIsValid || !timeIsValid || !dateIsValid) {
+      setInputs((curInputs) => {
+        return {
+          description: { value: curInputs.description.value },
+          time: { value: curInputs.time.value },
+          date: { value: curInputs.date.value },
+        };
+      });
+      return;
+    }
+    onSubmit(reminderData);
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.textInputContainer}>
+        <TextInput
+          placeholder="Do you want to set up something"
+          onChangeText={inputChangedHandler.bind(this, "description")}
+          value={inputs.description.value}
+        />
+      </View>
+      <View>
+        <PickDate savedTime={inputs.time.value} savedDate={inputs.date.value} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <OutlinedButton
+          icon={"close"}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          Cancel
+        </OutlinedButton>
+        <OutlinedButton
+          icon={submitButtonLabel ? "add" : "refresh"}
+          onPress={submitHandler}
+        >
+          {submitButtonLabel}
+        </OutlinedButton>
+      </View>
+    </View>
+  );
+}
+
+export default ReminderForm;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 40,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginHorizontal: 20,
+  },
+  textInputContainer: {
+    width: "90%",
+    paddingHorizontal: 6,
+    margin: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: Colors.primary50,
+  },
+});

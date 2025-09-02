@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 import Border from "../components/UI/Border";
-import { getFormattedDate, getFormattedTime, updatedTime } from "./date";
+import { getFormattedDate, updatedTime } from "./date";
 
-function PickDate({ getDate, getTime }) {
+function PickDate({ getDate, getTime, savedDate, savedTime, isEdited }) {
   const [date, setDate] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
   const [openTime, setOpenTime] = useState(false);
@@ -38,6 +38,8 @@ function PickDate({ getDate, getTime }) {
                       hour12: false,
                     })}
                   </Text>
+                ) : isEdited ? (
+                  <Text style={styles.dateText}>{savedTime}</Text>
                 ) : (
                   <Text style={styles.date}>Input Time</Text>
                 )}
@@ -80,6 +82,8 @@ function PickDate({ getDate, getTime }) {
                   <Text style={styles.dateText}>
                     {date.toLocaleDateString()}
                   </Text>
+                ) : isEdited ? (
+                  <Text style={styles.dateText}>{savedDate}</Text>
                 ) : (
                   <Text style={styles.date}>Input Date</Text>
                 )}

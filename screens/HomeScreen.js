@@ -1,54 +1,23 @@
-import { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useContext } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import IconButton from "../components/UI/IconButton";
-import ReminderItem from "../components/Reminder/ReminderItem";
+import ReminderList from "../components/Reminder/ReminderList";
+import Colors from "../constant/color";
+import { ReminderContext } from "../store/reminder";
 
-function HomeScreen({ navigation, route }) {
-  const [reminderGoals, setRemindersGoals] = useState([]);
+function HomeScreen() {
+  const reminderCtx = useContext(ReminderContext);
+  const reminderItem = reminderCtx.reminder;
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: ({ tintColor }) => (
-        <IconButton
-          icon={"add"}
-          size={24}
-          color={tintColor}
-          onPress={() =>
-            navigation.navigate("EditScreen", {
-              onGoBack: (newReminder) => {
-                setRemindersGoals((prev) => [newReminder, ...prev]);
-              },
-            })
-          }
-        />
-      ),
-    });
-  }, [navigation]);
+  if (!reminderItem || reminderItem.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ color: Colors.primary10 }}>Add some reminder</Text>
+      </View>
+    );
+  }
 
-  useEffect(() => {
-    if (route.params?.reminders) {
-      setRemindersGoals(route.params.reminders);
-    }
-  }, [route.params?.reminders]);
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={reminderGoals}
-        renderItem={(itemData) => {
-          return (
-            <ReminderItem
-              text={itemData.item.text}
-              date={itemData.item.date}
-              time={itemData.item.time}
-            />
-          );
-        }}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
-  );
+  return <ReminderList reminder={reminderItem} />;
 }
 
 export default HomeScreen;

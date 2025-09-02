@@ -1,102 +1,53 @@
-import { StyleSheet, TextInput, Text, View, Alert } from "react-native";
-import OutlinedButton from "../components/UI/OutlinedButton";
-import PickDate from "../date/PickDate";
-import { useState } from "react";
-import Colors from "../constant/color";
+import { StyleSheet } from "react-native";
+import { useContext, useLayoutEffect } from "react";
+import { ReminderContext } from "../store/reminder";
+import ReminderForm from "../components/Reminder/ReminderForm";
 
 function EditScreen({ navigation, route }) {
-  const [enteredGoalText, setEnteredGoalText] = useState("");
-  const [reminderGoal, setReminderGoal] = useState([]);
-  const [enteredDate, setEnteredDate] = useState("");
-  const [enteredTime, setEnteredTime] = useState("");
+  const reminderCtx = useContext(ReminderContext);
+  const reminderValue = route.params;
+  const editedReminderId = reminderValue?.reminderId;
 
-  function getDateHandler(dateGet) {
-    setEnteredDate(dateGet);
-  }
-  function getTimeHandler(timeGet) {
-    setEnteredTime(timeGet);
-  }
-  function inputHandler(enteredText) {
-    setEnteredGoalText(enteredText);
-  }
-  function addPlanHandler() {
-    if (enteredGoalText === "") {
-      Alert.alert("Input reminder", "You forgot to input todo");
-      return;
-    }
-    if (enteredTime === "") {
-      Alert.alert("Input Date", "You forget to input time");
-      return;
-    }
-    if (enteredDate === "") {
-      Alert.alert("Input Date", "You forget to input date");
-      return;
-    }
-    const newReminder = {
-      text: enteredGoalText,
-      date: enteredDate,
-      time: enteredTime,
-      id: Math.random().toString(),
-    };
+  const isEditing = !!editedReminderId;
 
-    const updatedReminders = [...reminderGoal, newReminder];
-    setReminderGoal(updatedReminders);
+  const selectedReminder = reminderCtx.reminder.find(
+    (reminder) => reminder.id === editedReminderId
+  );
 
-    if (route.params?.onGoBack) {
-      route.params.onGoBack(newReminder);
-    }
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? "Edit Reminder" : "Add Reminder",
+    });
+  }, [navigation, isEditing]);
 
+  function deleteReminderHandler() {
+    reminderCtx.deleteReminder(editedReminderId);
     navigation.goBack();
   }
-  function updatePlanHandler() {}
+  function cancelHandler() {
+    navigation.goBack();
+  }
+  function confirmReminderHandler(reminderData) {
+    if (isEditing) {
+      reminderCtx.updateReminder(editedReminderId, reminderData);
+    } else {
+      const id = Math.random().toString();
+
+      reminderCtx.addReminder({ ...reminderData, id: id });
+    }
+    navigation.goBack();
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.textInputContainer}>
-        <TextInput
-          placeholder="Do you want to set up something"
-          onChangeText={inputHandler}
-          value={enteredGoalText}
-        />
-      </View>
-      <View>
-        <PickDate getDate={getDateHandler} getTime={getTimeHandler} />
-      </View>
-      <View style={styles.buttonContainer}>
-        <OutlinedButton
-          icon={"close"}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          Cancel
-        </OutlinedButton>
-        <OutlinedButton icon={"add"} onPress={addPlanHandler}>
-          Add
-        </OutlinedButton>
-      </View>
-    </View>
+    <ReminderForm
+      submitButtonLabel={isEditing ? "Update" : "Add"}
+      onSubmit={confirmReminderHandler}
+      onCancel={cancelHandler}
+      defaultValues={selectedReminder}
+    />
   );
 }
 
 export default EditScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    marginTop: 40,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    marginHorizontal: 20,
-  },
-  textInputContainer: {
-    width: "90%",
-    paddingHorizontal: 6,
-    margin: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    backgroundColor: Colors.primary50,
-  },
-});
+const styles = StyleSheet.create({});

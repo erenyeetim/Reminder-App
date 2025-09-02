@@ -7,6 +7,7 @@ import EditScreen from "./screens/EditScreen";
 import Colors from "./constant/color";
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import ReminderContextProvider from "./store/reminder";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,34 +15,44 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerTintColor: Colors.primary10,
-            contentStyle: {
-              backgroundColor: Colors.primary100,
-            },
-            headerStyle: {
-              backgroundColor: Colors.primary400,
-            },
-          }}
-        >
-          <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            options={{
-              title: "All Planned",
+      <ReminderContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerTintColor: Colors.primary10,
+              contentStyle: {
+                backgroundColor: Colors.primary100,
+              },
+              headerStyle: {
+                backgroundColor: Colors.primary400,
+              },
             }}
-          />
-          <Stack.Screen
-            name="EditScreen"
-            component={EditScreen}
-            options={{
-              title: "Edit Screen",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="HomeScreen"
+              component={HomeScreen}
+              options={({ navigation }) => ({
+                title: "All Planned",
+                headerRight: ({ tintColor }) => (
+                  <IconButton
+                    icon={"add"}
+                    size={24}
+                    color={tintColor}
+                    onPress={() => navigation.navigate("EditScreen")}
+                  />
+                ),
+              })}
+            />
+            <Stack.Screen
+              name="EditScreen"
+              component={EditScreen}
+              options={{
+                title: "Edit Screen",
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ReminderContextProvider>
     </>
   );
 }
