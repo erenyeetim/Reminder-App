@@ -8,8 +8,8 @@ import { ReminderContext } from "../store/reminder";
 function HomeScreen() {
   const reminderCtx = useContext(ReminderContext);
   const reminderItem = reminderCtx.reminder;
-
   console.log(reminderItem);
+  
 
   if (!reminderItem || reminderItem.length === 0) {
     return (

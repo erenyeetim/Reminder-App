@@ -5,8 +5,7 @@ import ReminderForm from "../components/Reminder/ReminderForm";
 
 function EditScreen({ navigation, route }) {
   const reminderCtx = useContext(ReminderContext);
-  const reminderValue = route.params;
-  const editedReminderId = reminderValue?.reminderId;
+  const editedReminderId = route.params?.reminderId;
 
   const isEditing = !!editedReminderId;
 
@@ -27,13 +26,16 @@ function EditScreen({ navigation, route }) {
   function cancelHandler() {
     navigation.goBack();
   }
-  function confirmReminderHandler(reminderData) {
+  console.log(isEditing);
+
+  function confirmHandler(enteredData) {
     if (isEditing) {
-      reminderCtx.updateReminder(editedReminderId, reminderData);
+      reminderCtx.updateReminder(editedReminderId, enteredData);
+      console.log(editedReminderId);
     } else {
       const id = Math.random().toString();
 
-      reminderCtx.addReminder({ ...reminderData, id: id });
+      reminderCtx.addReminder({ ...enteredData, id: id });
     }
     navigation.goBack();
   }
@@ -41,7 +43,7 @@ function EditScreen({ navigation, route }) {
   return (
     <ReminderForm
       submitButtonLabel={isEditing ? "Update" : "Add"}
-      onSubmit={confirmReminderHandler}
+      onSubmit={confirmHandler}
       onCancel={cancelHandler}
       defaultValues={selectedReminder}
       isEditing={isEditing}

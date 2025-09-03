@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { getFormattedDate, updatedTime } from "../../date/date";
+import { useNavigation } from "@react-navigation/native";
+
 import OutlinedButton from "../UI/OutlinedButton";
 import PickDate from "../../date/PickDate";
 import Colors from "../../constant/color";
@@ -23,15 +24,7 @@ function ReminderForm({
     },
   });
 
-  useEffect(() => {
-    if (defaultValues) {
-      setInputs({
-        description: { value: defaultValues.description },
-        time: { value: defaultValues.time },
-        date: { value: defaultValues.date },
-      });
-    }
-  }, [defaultValues]);
+  const navigation = useNavigation();
 
   function inputChangedHandler(inputIdentifier, enteredAmount) {
     setInputs((curInputs) => {
@@ -94,7 +87,7 @@ function ReminderForm({
           Cancel
         </OutlinedButton>
         <OutlinedButton
-          icon={submitButtonLabel ? "add" : "refresh"}
+          icon={isEditing ? "refresh" : "add"}
           onPress={submitHandler}
         >
           {submitButtonLabel}

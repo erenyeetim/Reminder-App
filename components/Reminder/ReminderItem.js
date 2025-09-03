@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 function ReminderItem({ id, description, date, time }) {
   const navigation = useNavigation();
+  console.log(id);
 
   function reminderPressHandler() {
     navigation.navigate("EditScreen", {

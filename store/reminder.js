@@ -13,8 +13,8 @@ function reminderReducer(state, action) {
     case "ADD":
       return [action.payload, ...state];
     case "UPDATE":
-      updatableReminderIndex = state.findIndex(
-        (reminder) => reminder.id !== action.payload.id
+      const updatableReminderIndex = state.findIndex(
+        (reminder) => reminder.id === action.payload.id
       );
       const updatableReminder = state[updatableReminderIndex];
       const updateItem = { ...updatableReminder, ...action.payload.data };
