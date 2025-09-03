@@ -37,7 +37,7 @@ function ReminderContextProvider({ children }) {
   }
 
   function deleteReminder(id) {
-    dispatch({ type: "DELETE", payload: reminder });
+    dispatch({ type: "DELETE", payload: id });
   }
 
   function updateReminder(id, expenseData) {

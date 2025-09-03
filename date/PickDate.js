@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Border from "../components/UI/Border";
 import { getFormattedDate, updatedTime } from "./date";
+import Colors from "../constant/color";
 
 function PickDate({
   onChangeTime,
@@ -30,7 +31,7 @@ function PickDate({
           <Border>
             <View style={styles.buttonContainer}>
               <View style={styles.icon}>
-                <Ionicons name="time" />
+                <Ionicons name="time" size={18} color={Colors.primary100} />
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.text}>Time</Text>
@@ -78,7 +79,7 @@ function PickDate({
           <Border>
             <View style={styles.buttonContainer}>
               <View style={styles.icon}>
-                <Ionicons name="calendar" />
+                <Ionicons name="calendar" size={18} color={Colors.primary100} />
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.text}>Date</Text>
@@ -128,6 +129,7 @@ export default PickDate;
 const styles = StyleSheet.create({
   text: {
     fontSize: 16,
+    color: Colors.primary100,
     fontWeight: "bold",
   },
   buttonContainer: {
@@ -145,6 +147,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dateText: {
+    color: Colors.primary100,
     fontSize: 16,
     textAlign: "center",
   },
@@ -152,6 +155,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 16,
     opacity: 0.5,
+    color: Colors.primary100,
     textAlign: "center",
   },
 });

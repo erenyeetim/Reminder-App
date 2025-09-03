@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 
 function ReminderItem({ id, description, date, time }) {
   const navigation = useNavigation();
-  console.log(id);
 
   function reminderPressHandler() {
     navigation.navigate("EditScreen", {
@@ -44,11 +43,12 @@ export default ReminderItem;
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
+    borderColor: Colors.primary300,
     borderRadius: 15,
     marginHorizontal: 20,
     marginVertical: 6,
     overflow: "hidden",
-    backgroundColor: Colors.primary50,
+    backgroundColor: Colors.primary200,
     elevation: 4,
   },
   dataContainer: {
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   text: {
+    color: Colors.primary100,
     fontSize: 16,
   },
   textContainer: {
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   dateText: {
+    color: Colors.primary100,
     fontWeight: "bold",
     fontSize: 16,
   },

@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import OutlinedButton from "../UI/OutlinedButton";
 import PickDate from "../../date/PickDate";
 import Colors from "../../constant/color";
+import IconButton from "../UI/IconButton";
 
 function ReminderForm({
   submitButtonLabel,
   onSubmit,
+  onDelete,
   defaultValues,
   isEditing,
 }) {
@@ -63,9 +65,11 @@ function ReminderForm({
     <View style={styles.container}>
       <View style={styles.textInputContainer}>
         <TextInput
+          placeholderTextColor={Colors.primary100}
           placeholder="Do you want to set up something"
           onChangeText={inputChangedHandler.bind(this, "description")}
           value={inputs.description.value}
+          style={{ color: Colors.primary100 }}
         />
       </View>
       <View>
@@ -86,6 +90,14 @@ function ReminderForm({
         >
           Cancel
         </OutlinedButton>
+        {isEditing && (
+          <IconButton
+            icon={"trash"}
+            size={32}
+            color={"red"}
+            onPress={onDelete}
+          />
+        )}
         <OutlinedButton
           icon={isEditing ? "refresh" : "add"}
           onPress={submitHandler}
@@ -115,6 +127,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 8,
     borderWidth: 1,
-    backgroundColor: Colors.primary50,
+    backgroundColor: Colors.primary200,
   },
 });

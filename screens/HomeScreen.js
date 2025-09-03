@@ -8,13 +8,12 @@ import { ReminderContext } from "../store/reminder";
 function HomeScreen() {
   const reminderCtx = useContext(ReminderContext);
   const reminderItem = reminderCtx.reminder;
-  console.log(reminderItem);
   
 
   if (!reminderItem || reminderItem.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{ color: Colors.primary10 }}>Add some reminder</Text>
+        <Text style={{ color: Colors.primary100 }}>Add some reminder</Text>
       </View>
     );
   }

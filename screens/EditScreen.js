@@ -26,12 +26,10 @@ function EditScreen({ navigation, route }) {
   function cancelHandler() {
     navigation.goBack();
   }
-  console.log(isEditing);
 
   function confirmHandler(enteredData) {
     if (isEditing) {
       reminderCtx.updateReminder(editedReminderId, enteredData);
-      console.log(editedReminderId);
     } else {
       const id = Math.random().toString();
 
@@ -45,6 +43,7 @@ function EditScreen({ navigation, route }) {
       submitButtonLabel={isEditing ? "Update" : "Add"}
       onSubmit={confirmHandler}
       onCancel={cancelHandler}
+      onDelete={deleteReminderHandler}
       defaultValues={selectedReminder}
       isEditing={isEditing}
     />

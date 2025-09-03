@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     overflow: "hidden",
-    borderColor: Colors.primary50,
-    backgroundColor: Colors.primary50,
+    borderColor: Colors.primary200,
+    backgroundColor: Colors.primary200,
   },
 });
