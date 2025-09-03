@@ -1,22 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { getFormattedDate, updatedTime } from "../../date/date";
 import OutlinedButton from "../UI/OutlinedButton";
 import PickDate from "../../date/PickDate";
 import Colors from "../../constant/color";
 
-function ReminderForm({ submitButtonLabel, onSubmit, defaultValues }) {
+function ReminderForm({
+  submitButtonLabel,
+  onSubmit,
+  defaultValues,
+  isEditing,
+}) {
   const [inputs, setInputs] = useState({
     description: {
       value: defaultValues ? defaultValues.description : "",
     },
     time: {
-      value: defaultValues ? updatedTime(defaultValues.date) : "",
+      value: defaultValues ? defaultValues.time : "",
     },
     date: {
-      value: defaultValues ? getFormattedDate(defaultValues.date) : "",
+      value: defaultValues ? defaultValues.date : "",
     },
   });
+
+  useEffect(() => {
+    if (defaultValues) {
+      setInputs({
+        description: { value: defaultValues.description },
+        time: { value: defaultValues.time },
+        date: { value: defaultValues.date },
+      });
+    }
+  }, [defaultValues]);
 
   function inputChangedHandler(inputIdentifier, enteredAmount) {
     setInputs((curInputs) => {
@@ -61,7 +76,13 @@ function ReminderForm({ submitButtonLabel, onSubmit, defaultValues }) {
         />
       </View>
       <View>
-        <PickDate savedTime={inputs.time.value} savedDate={inputs.date.value} />
+        <PickDate
+          timeValue={inputs.time.value}
+          dateValue={inputs.date.value}
+          onChangeTime={inputChangedHandler.bind(this, "time")}
+          onChangeDate={inputChangedHandler.bind(this, "date")}
+          isEditing={isEditing}
+        />
       </View>
       <View style={styles.buttonContainer}>
         <OutlinedButton

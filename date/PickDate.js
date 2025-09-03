@@ -6,12 +6,18 @@ import { Ionicons } from "@expo/vector-icons";
 import Border from "../components/UI/Border";
 import { getFormattedDate, updatedTime } from "./date";
 
-function PickDate({ getDate, getTime, savedDate, savedTime, isEdited }) {
+function PickDate({
+  onChangeTime,
+  onChangeDate,
+  timeValue,
+  dateValue,
+  isEditing,
+}) {
   const [date, setDate] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
   const [openTime, setOpenTime] = useState(false);
-  const [showTimeText, setShowTimeText] = useState(false);
-  const [showDateText, setShowDateText] = useState(false);
+  const [showTimeText, setShowTimeText] = useState(true);
+  const [showDateText, setShowDateText] = useState(true);
 
   return (
     <View>
@@ -31,6 +37,10 @@ function PickDate({ getDate, getTime, savedDate, savedTime, isEdited }) {
               </View>
               <View style={styles.timeContainer}>
                 {showTimeText ? (
+                  <Text style={isEditing ? styles.dateText : styles.date}>
+                    {isEditing ? timeValue : "Input Time"}
+                  </Text>
+                ) : (
                   <Text style={styles.dateText}>
                     {date.toLocaleTimeString([], {
                       hour: "2-digit",
@@ -38,10 +48,6 @@ function PickDate({ getDate, getTime, savedDate, savedTime, isEdited }) {
                       hour12: false,
                     })}
                   </Text>
-                ) : isEdited ? (
-                  <Text style={styles.dateText}>{savedTime}</Text>
-                ) : (
-                  <Text style={styles.date}>Input Time</Text>
                 )}
               </View>
               {openTime && (
@@ -52,9 +58,9 @@ function PickDate({ getDate, getTime, savedDate, savedTime, isEdited }) {
                   onChange={(event, selectedDate) => {
                     setOpenTime(false);
                     if (selectedDate) {
+                      setShowTimeText(false);
                       setDate(selectedDate);
-                      getTime(updatedTime(selectedDate));
-                      setShowTimeText(true);
+                      onChangeTime(updatedTime(selectedDate));
                     }
                   }}
                 />
@@ -79,13 +85,13 @@ function PickDate({ getDate, getTime, savedDate, savedTime, isEdited }) {
               </View>
               <View style={styles.timeContainer}>
                 {showDateText ? (
+                  <Text style={isEditing ? styles.dateText : styles.date}>
+                    {isEditing ? dateValue : "Input Date"}
+                  </Text>
+                ) : (
                   <Text style={styles.dateText}>
                     {date.toLocaleDateString()}
                   </Text>
-                ) : isEdited ? (
-                  <Text style={styles.dateText}>{savedDate}</Text>
-                ) : (
-                  <Text style={styles.date}>Input Date</Text>
                 )}
               </View>
               {openDate && (
@@ -101,9 +107,9 @@ function PickDate({ getDate, getTime, savedDate, savedTime, isEdited }) {
                     if (event.type === "set") {
                       setOpenDate(false);
                       if (selectedDate) {
+                        setShowDateText(false);
                         setDate(selectedDate);
-                        getDate(getFormattedDate(selectedDate));
-                        setShowDateText(true);
+                        onChangeDate(getFormattedDate(selectedDate));
                       }
                     }
                   }}

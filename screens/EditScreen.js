@@ -44,6 +44,7 @@ function EditScreen({ navigation, route }) {
       onSubmit={confirmReminderHandler}
       onCancel={cancelHandler}
       defaultValues={selectedReminder}
+      isEditing={isEditing}
     />
   );
 }
