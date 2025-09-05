@@ -4,6 +4,7 @@ import { experimental_LayoutConformance } from "react-native";
 export const ReminderContext = createContext({
   reminder: [],
   addReminder: ({ description, time, date }) => {},
+  setReminder: (reminder) => {},
   deleteReminder: (id) => {},
   updateReminder: (id, { description, time, date }) => {},
 });
@@ -12,6 +13,9 @@ function reminderReducer(state, action) {
   switch (action.type) {
     case "ADD":
       return [action.payload, ...state];
+    case "SET":
+      const inverted = action.payload.reverse();
+      return inverted;
     case "UPDATE":
       const updatableReminderIndex = state.findIndex(
         (reminder) => reminder.id === action.payload.id
@@ -35,7 +39,9 @@ function ReminderContextProvider({ children }) {
   function addReminder(reminderData) {
     dispatch({ type: "ADD", payload: reminderData });
   }
-
+  function setReminder(expenses) {
+    dispatch({ type: "SET", payload: expenses });
+  }
   function deleteReminder(id) {
     dispatch({ type: "DELETE", payload: id });
   }
@@ -47,6 +53,7 @@ function ReminderContextProvider({ children }) {
   const value = {
     reminder: reminderState,
     addReminder: addReminder,
+    setReminder: setReminder,
     deleteReminder: deleteReminder,
     updateReminder: updateReminder,
   };

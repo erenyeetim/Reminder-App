@@ -10,7 +10,6 @@ import IconButton from "../UI/IconButton";
 function ReminderForm({
   submitButtonLabel,
   onSubmit,
-  onDelete,
   defaultValues,
   isEditing,
 }) {
@@ -90,14 +89,7 @@ function ReminderForm({
         >
           Cancel
         </OutlinedButton>
-        {isEditing && (
-          <IconButton
-            icon={"trash"}
-            size={32}
-            color={"red"}
-            onPress={onDelete}
-          />
-        )}
+
         <OutlinedButton
           icon={isEditing ? "refresh" : "add"}
           onPress={submitHandler}
@@ -113,7 +105,6 @@ export default ReminderForm;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     marginTop: 40,
   },

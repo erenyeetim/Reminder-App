@@ -1,7 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useContext, useLayoutEffect } from "react";
 import { ReminderContext } from "../store/reminder";
 import ReminderForm from "../components/Reminder/ReminderForm";
+import { deleteReminder, storeReminder, updateReminder } from "../store/https";
+import IconButton from "../components/UI/IconButton";
+import Colors from "../constant/color";
 
 function EditScreen({ navigation, route }) {
   const reminderCtx = useContext(ReminderContext);
@@ -19,7 +22,8 @@ function EditScreen({ navigation, route }) {
     });
   }, [navigation, isEditing]);
 
-  function deleteReminderHandler() {
+  async function deleteReminderHandler() {
+    await deleteReminder(editedReminderId);
     reminderCtx.deleteReminder(editedReminderId);
     navigation.goBack();
   }
@@ -27,11 +31,12 @@ function EditScreen({ navigation, route }) {
     navigation.goBack();
   }
 
-  function confirmHandler(enteredData) {
+  async function confirmHandler(enteredData) {
     if (isEditing) {
       reminderCtx.updateReminder(editedReminderId, enteredData);
+      await updateReminder(editedReminderId, enteredData);
     } else {
-      const id = Math.random().toString();
+      const id = await storeReminder(enteredData);
 
       reminderCtx.addReminder({ ...enteredData, id: id });
     }
@@ -39,17 +44,40 @@ function EditScreen({ navigation, route }) {
   }
 
   return (
-    <ReminderForm
-      submitButtonLabel={isEditing ? "Update" : "Add"}
-      onSubmit={confirmHandler}
-      onCancel={cancelHandler}
-      onDelete={deleteReminderHandler}
-      defaultValues={selectedReminder}
-      isEditing={isEditing}
-    />
+    <View style={styles.container}>
+      <ReminderForm
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+        onSubmit={confirmHandler}
+        onCancel={cancelHandler}
+        defaultValues={selectedReminder}
+        isEditing={isEditing}
+      />
+      {isEditing && (
+        <View style={styles.deleteContainer}>
+          <IconButton
+            icon={"trash"}
+            size={32}
+            color={"red"}
+            onPress={deleteReminderHandler}
+          />
+        </View>
+      )}
+    </View>
   );
 }
 
 export default EditScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.primary800,
+  },
+  deleteContainer: {
+    marginTop: 16,
+    paddingTop: 8,
+    borderTopWidth: 2,
+    borderTopColor: Colors.primary200,
+    alignItems: "center",
+  },
+});

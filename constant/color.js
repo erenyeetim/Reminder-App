@@ -5,6 +5,7 @@ const Colors = {
   primary400: "#afd8fbff",
   primary500: "#284159ff",
   primary600: "#141719ff",
+  error500: "#cb2121ff",
 };
 
 export default Colors;

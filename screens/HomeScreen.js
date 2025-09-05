@@ -1,14 +1,23 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import ReminderList from "../components/Reminder/ReminderList";
 import Colors from "../constant/color";
 import { ReminderContext } from "../store/reminder";
+import { fetchReminder } from "../store/https";
 
 function HomeScreen() {
   const reminderCtx = useContext(ReminderContext);
   const reminderItem = reminderCtx.reminder;
-  
+
+  useEffect(() => {
+    async function getReminder() {
+      const reminder = await fetchReminder();
+
+      reminderCtx.setReminder(reminder);
+    }
+    getReminder();
+  }, []);
 
   if (!reminderItem || reminderItem.length === 0) {
     return (
