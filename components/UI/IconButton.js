@@ -16,7 +16,7 @@ export default IconButton;
 
 const styles = StyleSheet.create({
   button: {
-    margin: 4,
+    margin: 20,
     justifyContent: "center",
     alignItems: "center",
   },

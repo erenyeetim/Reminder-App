@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 import OutlinedButton from "../UI/OutlinedButton";
 import PickDate from "../../date/PickDate";
 import Colors from "../../constant/color";
-import IconButton from "../UI/IconButton";
 
 function ReminderForm({
   submitButtonLabel,
@@ -22,6 +21,9 @@ function ReminderForm({
     },
     date: {
       value: defaultValues ? defaultValues.date : "",
+    },
+    isCompleted: {
+      value: defaultValues ? defaultValues.isCompleted : false,
     },
   });
 
@@ -41,6 +43,7 @@ function ReminderForm({
       description: inputs.description.value,
       time: inputs.time.value,
       date: inputs.date.value,
+      isCompleted: inputs.isCompleted.value,
     };
 
     const descriptionIsValid = reminderData.description.trim().length > 0;
@@ -53,6 +56,7 @@ function ReminderForm({
           description: { value: curInputs.description.value },
           time: { value: curInputs.time.value },
           date: { value: curInputs.date.value },
+          isCompleted: { value: curInputs.isCompleted.value },
         };
       });
       return;

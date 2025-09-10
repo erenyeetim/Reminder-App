@@ -1,12 +1,17 @@
 import { StyleSheet, View } from "react-native";
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
+
 import { ReminderContext } from "../store/reminder";
 import ReminderForm from "../components/Reminder/ReminderForm";
 import { deleteReminder, storeReminder, updateReminder } from "../store/https";
 import IconButton from "../components/UI/IconButton";
 import Colors from "../constant/color";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function EditScreen({ navigation, route }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState();
   const reminderCtx = useContext(ReminderContext);
   const editedReminderId = route.params?.reminderId;
 
@@ -23,24 +28,44 @@ function EditScreen({ navigation, route }) {
   }, [navigation, isEditing]);
 
   async function deleteReminderHandler() {
-    await deleteReminder(editedReminderId);
-    reminderCtx.deleteReminder(editedReminderId);
-    navigation.goBack();
+    setIsSubmitting(true);
+    try {
+      await deleteReminder(editedReminderId);
+      reminderCtx.deleteReminder(editedReminderId);
+      navigation.goBack();
+    } catch (error) {
+      setError("Could not delete expense - please try again later!");
+      setIsSubmitting(false);
+    }
   }
   function cancelHandler() {
     navigation.goBack();
   }
 
   async function confirmHandler(enteredData) {
-    if (isEditing) {
-      reminderCtx.updateReminder(editedReminderId, enteredData);
-      await updateReminder(editedReminderId, enteredData);
-    } else {
-      const id = await storeReminder(enteredData);
+    setIsSubmitting(true);
+    try {
+      if (isEditing) {
+        reminderCtx.updateReminder(editedReminderId, enteredData);
+        await updateReminder(editedReminderId, enteredData);
+      } else {
+        const id = await storeReminder(enteredData);
 
-      reminderCtx.addReminder({ ...enteredData, id: id });
+        reminderCtx.addReminder({ ...enteredData, id: id });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError("Could not save data - please try again later!");
+      setIsSubmitting(false);
     }
-    navigation.goBack();
+  }
+
+  if (error && !isSubmitting) {
+    return <ErrorOverlay message={error} />;
+  }
+
+  if (isSubmitting) {
+    return <LoadingOverlay />;
   }
 
   return (

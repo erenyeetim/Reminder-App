@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import Colors from "../../constant/color";
 import { useNavigation } from "@react-navigation/native";
+
+import Colors from "../../constant/color";
 
 function ReminderItem({ id, description, date, time }) {
   const navigation = useNavigation();

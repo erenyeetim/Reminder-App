@@ -1,12 +1,11 @@
 import { createContext, useReducer } from "react";
-import { experimental_LayoutConformance } from "react-native";
 
 export const ReminderContext = createContext({
   reminder: [],
-  addReminder: ({ description, time, date }) => {},
+  addReminder: ({ description, time, date, isCompleted }) => {},
   setReminder: (reminder) => {},
   deleteReminder: (id) => {},
-  updateReminder: (id, { description, time, date }) => {},
+  updateReminder: (id, { description, time, date, isCompleted }) => {},
 });
 
 function reminderReducer(state, action) {
