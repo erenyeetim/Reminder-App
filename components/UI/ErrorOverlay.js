@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     marginBottom: 8,
-    fontFamily: "open-sans"
+    fontFamily: "open-sans",
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "open-sans-bold",
   },
 });
