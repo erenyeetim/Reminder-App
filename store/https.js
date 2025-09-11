@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_URL = "firebase_url";
+const BACKEND_URL = "https://reminderapp-d3769-default-rtdb.firebaseio.com/";
 
 export async function storeReminder(reminderData) {
   const response = await axios.post(

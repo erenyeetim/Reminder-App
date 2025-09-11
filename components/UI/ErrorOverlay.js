@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     marginBottom: 8,
+    fontFamily: "open-sans"
   },
   title: {
     fontSize: 20,

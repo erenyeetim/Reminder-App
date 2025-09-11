@@ -72,7 +72,7 @@ function ReminderForm({
           placeholder="Do you want to set up something"
           onChangeText={inputChangedHandler.bind(this, "description")}
           value={inputs.description.value}
-          style={{ color: Colors.primary100 }}
+          style={{ color: Colors.primary100, fontFamily: "open-sans" }}
         />
       </View>
       <View>

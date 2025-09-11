@@ -42,5 +42,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.primary100,
+    fontFamily: "open-sans",
   },
 });

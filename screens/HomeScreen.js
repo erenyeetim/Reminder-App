@@ -104,6 +104,13 @@ function HomeScreen({ navigation }) {
       }
       setIsFetching(false);
     }
+
+    (async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        alert("Bildirim izni verilmedi!");
+      }
+    })();
     getReminder();
   }, []);
 
@@ -119,7 +126,9 @@ function HomeScreen({ navigation }) {
   if (!currentReminders || currentReminders.length === 0) {
     return (
       <View style={styles.container}>
-        <Text style={{ color: Colors.primary100 }}>There is no reminder</Text>
+        <Text style={{ color: Colors.primary100, fontFamily: "open-sans" }}>
+          There is no reminder
+        </Text>
       </View>
     );
   }

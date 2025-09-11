@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.primary100,
     fontSize: 16,
+    fontFamily: "open-sans",
   },
   textContainer: {
     flex: 3,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     color: Colors.primary100,
-    fontWeight: "bold",
+    fontFamily: "open-sans-bold",
     fontSize: 16,
   },
 });

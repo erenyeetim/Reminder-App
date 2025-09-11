@@ -11,7 +11,7 @@ function CompletedScreen() {
   if (!currentReminders || currentReminders.length === 0) {
     return (
       <View style={styles.container}>
-        <Text style={{ color: Colors.primary100 }}>
+        <Text style={{ color: Colors.primary100, fontFamily: "open-sans" }}>
           There is no completed reminder
         </Text>
       </View>

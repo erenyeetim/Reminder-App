@@ -1,15 +1,16 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Ionicons } from "@expo/vector-icons";
+import { useFonts } from "expo-font";
 
+import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "./screens/HomeScreen";
 import EditScreen from "./screens/EditScreen";
 import Colors from "./constant/color";
 import ReminderContextProvider from "./store/reminder";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CompletedScreen from "./screens/CompletedScreen";
-import IconButton from "./components/UI/IconButton";
+import AppLoading from "expo-app-loading";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,6 +37,10 @@ function ReminderScreens() {
         options={{
           title: "Current Reminder",
           tabBarLabel: "Current",
+          tabBarLabelStyle: { fontFamily: "open-sans" },
+          headerTitleStyle: {
+            fontFamily: "open-sans",
+          },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list-outline" size={size} color={color} />
           ),
@@ -46,6 +51,10 @@ function ReminderScreens() {
         component={CompletedScreen}
         options={{
           title: "Completed Reminder",
+          tabBarLabelStyle: { fontFamily: "open-sans" },
+          headerTitleStyle: {
+            fontFamily: "open-sans",
+          },
           tabBarLabel: "Completed",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="checkmark" size={size} color={color} />
@@ -57,6 +66,13 @@ function ReminderScreens() {
 }
 
 export default function App() {
+  const [fonstLoaded] = useFonts({
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+  });
+  if (!fonstLoaded) {
+    return <AppLoading />;
+  }
   return (
     <>
       <StatusBar style="light" />
@@ -86,6 +102,9 @@ export default function App() {
               component={EditScreen}
               options={{
                 title: "Edit Screen",
+                headerTitleStyle: {
+                  fontFamily: "open-sans",
+                },
               }}
             />
           </Stack.Navigator>

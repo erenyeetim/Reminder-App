@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: Colors.primary100,
-    fontWeight: "bold",
+    fontFamily: "open-sans-bold",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     color: Colors.primary100,
     fontSize: 16,
     textAlign: "center",
+    fontFamily: "open-sans",
   },
 
   date: {
@@ -157,5 +158,6 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     color: Colors.primary100,
     textAlign: "center",
+    fontFamily: "open-sans",
   },
 });
