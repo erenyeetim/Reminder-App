@@ -20,7 +20,7 @@
       "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#d1ebe6"
+      "backgroundColor": "#404040"
       },
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",

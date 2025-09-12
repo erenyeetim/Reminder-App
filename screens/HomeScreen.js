@@ -120,6 +120,40 @@ function HomeScreen({ navigation }) {
   }, [reminderCtx.reminder]);
 
   useEffect(() => {
+    const checkInitialNotification = async () => {
+      const lastNotificationResponse =
+        await Notifications.getLastNotificationResponseAsync();
+
+      if (lastNotificationResponse) {
+        const triggeredReminderId =
+          lastNotificationResponse.notification.request.content.data.id;
+
+        const reminderToUpdate = reminderCtx.reminder.find(
+          (r) => r.id === triggeredReminderId
+        );
+
+        if (!reminderToUpdate.isCompleted) {
+          reminderCtx.updateReminder(triggeredReminderId, {
+            isCompleted: true,
+          });
+
+          try {
+            const { id, ...rest } = reminderToUpdate;
+            await updateReminder(triggeredReminderId, {
+              ...rest,
+              isCompleted: true,
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    };
+
+    checkInitialNotification();
+  }, [reminderCtx.reminder]);
+
+  useEffect(() => {
     async function getReminder() {
       setIsFetching(true);
       try {
