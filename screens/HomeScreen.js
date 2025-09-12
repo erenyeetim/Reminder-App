@@ -20,11 +20,9 @@ Notifications.setNotificationHandler({
 });
 
 function HomeScreen({ navigation }) {
-  const [completedReminderIds, setCompletedReminderIds] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState();
   const reminderCtx = useContext(ReminderContext);
-  const reminderItem = reminderCtx.reminder;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -68,6 +66,35 @@ function HomeScreen({ navigation }) {
     const subscription = Notifications.addNotificationReceivedListener(
       async (notification) => {
         const triggeredReminderId = notification.request.content.data.id;
+
+        const reminderToUpdate = reminderCtx.reminder.find(
+          (r) => r.id === triggeredReminderId
+        );
+
+        if (!reminderToUpdate) return;
+
+        reminderCtx.updateReminder(triggeredReminderId, { isCompleted: true });
+
+        try {
+          const { id, ...rest } = reminderToUpdate;
+          await updateReminder(triggeredReminderId, {
+            ...rest,
+            isCompleted: true,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    );
+
+    return () => subscription.remove();
+  }, [reminderCtx.reminder]);
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      async (response) => {
+        const triggeredReminderId =
+          response.notification.request.content.data.id;
 
         const reminderToUpdate = reminderCtx.reminder.find(
           (r) => r.id === triggeredReminderId
